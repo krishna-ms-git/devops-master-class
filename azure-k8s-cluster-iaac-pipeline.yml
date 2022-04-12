@@ -17,9 +17,17 @@ steps:
     provider: 'azurerm'
     command: 'init'
     workingDirectory: '$(System.DefaultWorkingDirectory)/projects/microservices/01-currency-exchange-microservice-basic/configuration/iaac/azure/kubernetes'
-    commandOptions: '-var client_id=$(client_id) -var client_secret=$(client_secret) -var ssh_public_key=$(publickey.secureFilePath)'
+    #commandOptions: '-var client_id=$(client_id) -var client_secret=$(client_secret) -var ssh_public_key=$(publickey.secureFilePath)'
     backendServiceArm: 'azure-service-connection'
     backendAzureRmResourceGroupName: 'terraformstate'
     backendAzureRmStorageAccountName: 'terraformstateaccount'
     backendAzureRmContainerName: 'terraformstatecontainre'
     backendAzureRmKey: 'azure-k8s.tfstate'
+    
+- task: TerraformTaskV2@2
+  inputs:
+    provider: 'azurerm'
+    command: 'apply'
+    workingDirectory: '$(System.DefaultWorkingDirectory)/projects/microservices/01-currency-exchange-microservice-basic/configuration/iaac/azure/kubernetes'
+    commandOptions: '-var client_id=$(client_id) -var client_secret=$(client_secret) -var ssh_public_key=$(publickey.secureFilePath)'
+    environmentServiceNameAzureRM: 'azure-service-connection'
